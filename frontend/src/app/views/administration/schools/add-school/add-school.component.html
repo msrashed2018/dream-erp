@@ -1,0 +1,86 @@
+<div class="animated fadeIn ">
+    <div class="row ">
+        <div style="width:100% !important;">
+            <div class="card">
+                <div class="card-header">
+                    <strong>بيانات المدرسة</strong>
+                    <div class="card-header-actions">
+                        <button type="button" class="card-header-action btn btn-link btn-minimize"
+                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                    </div>
+                </div>
+
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
+                    class="card-body ">
+                    <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()">
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="schoolName"> اسم المدرسة
+                                (*)</label>
+                            <div class="col-md-6">
+                                <input maxlength="50" [(ngModel)]="school.name" #name="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" type="text"
+                                    name="schoolName" class="form-control" required>
+                                <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                                    <div *ngIf="name.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="schoolAddress"> العنوان
+                                (*)</label>
+                            <div class="col-md-6">
+                                <input maxlength="50" [(ngModel)]="school.address" #address="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && address.invalid }" type="text"
+                                    name="schoolAddress" class="form-control" required>
+                                <div *ngIf="f.submitted && address.invalid" class="invalid-feedback">
+                                    <div *ngIf="address.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="schoolOwner"> مالك العقد
+                                (*)</label>
+                            <div class="col-md-6">
+                                <input maxlength="50" [(ngModel)]="school.owner" #owner="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && owner.invalid }" type="text"
+                                    name="schoolOwner" class="form-control" required>
+                                <div *ngIf="f.submitted && owner.invalid" class="invalid-feedback">
+                                    <div *ngIf="owner.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="schoolMobile">  رقم الموبيل
+                                (*)</label>
+                            <div class="col-md-6">
+                                <input maxlength="50" [(ngModel)]="school.mobile" #mobile="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" type="text"
+                                    name="schoolMobile" class="form-control" required>
+                                <div *ngIf="f.submitted && mobile.invalid" class="invalid-feedback">
+                                    <div *ngIf="mobile.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="schoolNotes"> ملاحظات</label>
+                            <div class="col-md-6">
+                                <textarea maxlength="120" [(ngModel)]="school.notes" type="text" name="schoolNotes"
+                                    class="form-control"> </textarea>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
+                                أضف المدرسة</button>
+                            <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i
+                                    class="fa fa-ban"></i>
+                                إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

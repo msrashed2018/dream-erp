@@ -1,0 +1,97 @@
+<br>
+<div>
+    <h4 style="text-align: center; color: rgb(3, 54, 148)">{{title}}</h4>
+</div>
+<br />
+
+
+<button (click)="onAdd()" class="btn btn-success "><strong>اضافة</strong> <i class="fa fa-plus-circle"></i></button>
+<br> <br />
+
+<div class="form-group row ">
+    <!--<div class="col-md-2">
+      <button type="button" (click)="printResults()" class="btn btn-md btn-success"><i class="fa fa-print"></i>
+        طباعة </button>
+    </div>-->
+    <div class="col-md-3">
+        <label class="col-md-0 col-form-label font-weight-bold" for="filteredProduct">
+        </label>
+
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="filteredProduct"><b style="color:darkred">المنتج :
+        </b></label>
+    <div class="col-md-2">
+        <select name="filteredProduct" class="form-control" [(ngModel)]="filteredProductName"
+            (ngModelChange)="onFilteredProductChanged($event)">
+            <option></option>
+            <option *ngFor="let product of products" [ngValue]="product.name">{{product.name}}
+            </option>
+        </select>
+
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="filteredSize"><b style="color:darkred">المقاس
+        </b></label>
+    <div class="col-md-2">
+        <input [(ngModel)]="filteredSize" type="number" name="filteredSize" class="form-control"
+            (ngModelChange)="onFilteredSizeChanged($event)">
+    </div>
+</div>
+<table class="table table-responsive-sm table-hover table-outline mb-0 table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">المنتج</th>
+            <th class="text-center">المقاس</th>
+            <th class="text-center">الكمية</th>
+            <th class="text-center">ملاحظات</th>
+            <th *ngIf="isAdmin" class="text-center">مسح</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let production of productions ; let i=index">
+            <td class="text-center"><b>{{items+i+1}}</b></td>
+            <td class="text-center">
+                <b>{{production.productSize.product.name}}</b>
+            </td>
+            <td class="text-center">
+                <b>{{production.productSize.size}}</b>
+                <div class="small text-muted">
+                    <span style="color: coral;">
+
+                        السعر: {{production.productSize.wholesalePrice}} |
+                        {{production.productSize.price}}</span>
+                </div>
+            </td>
+            <td class="text-center"><b>{{production.amount}}</b>
+                <div class="small text-muted">
+                    <span style="color: cornflowerblue;"> اخر تحديث: {{production.lastUpdate}}</span>
+                </div>
+            </td>
+            <td class="text-center"><b>{{production.notes}}</b></td>
+
+            <td class="text-center">
+                <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(production.id)">حذف
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+<div *ngIf="noDataFound">
+    <br>
+    <alert type="info">
+        <strong>{{noDataFound}}</strong>
+    </alert>
+</div>
+<hr>
+
+<div style="justify-content: center !important; display: flex !important;">
+    <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [boundaryLinks]="true"
+        [rotate]="true" (numPages)="numPages = $event" (pageChanged)="pageChanged($event)"
+        [itemsPerPage]="itemsPerPage">
+    </pagination>
+</div>
+<pre class="card card-body card-header justify-content-center">Page: {{currentPage}} / {{numPages}}</pre>
+<hr>

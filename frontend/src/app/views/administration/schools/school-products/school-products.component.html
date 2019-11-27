@@ -1,0 +1,289 @@
+<div class="animated fadeIn ">
+    <div class="row ">
+        <div style="width:100% !important;">
+            <div class="card">
+                <div class="card-header">
+                    <strong style="align-content: center;">
+
+                        <b style="color:blue">البضاعة</b>
+                    </strong>
+                    <div class="card-header-actions">
+                        <button type="button" class="card-header-action btn btn-link btn-minimize"
+                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                    </div>
+                </div>
+
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
+                    class="card-body ">
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label font-weight-bold" for="schoolName"> المدرسة
+                        </label>
+                        <div class="col-md-3">
+                            <input [disabled]="true" [(ngModel)]="school.name" type="text" name="schoolName"
+                                class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label font-weight-bold" for="wholeProductsPrice"> اجمالي سعر
+                            البضاعة
+                        </label>
+                        <div class="col-md-3">
+                            <input [disabled]="true" [(ngModel)]="wholeProductsPrice" type="number"
+                                name="wholeProductsPrice" class="form-control">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row ">
+                        <!--<div class="col-md-2">
+                              <button type="button" (click)="printResults()" class="btn btn-md btn-success"><i class="fa fa-print"></i>
+                                طباعة </button>
+                            </div>-->
+
+                        <label class="col-md-0 col-form-label font-weight-bold" for="sDate"><b style="color:darkred"> من
+                                : </b></label>
+                        <div class="col-md-2">
+                            <input [(ngModel)]="filteredDateFrom" class="form-control" type="date" name="sDate"
+                                style="text-align: right" (ngModelChange)="onFilteredDateFromChanged($event)">
+                        </div>
+                        <label class="col-md-0 col-form-label font-weight-bold" for="eDate"><b style="color:darkred">
+                                الي : </b></label>
+                        <div class="col-md-2">
+                            <input [(ngModel)]="filteredDateTo" class="form-control" type="date" name="eDate"
+                                style="text-align: right" (ngModelChange)="onFilteredDateToChanged($event)">
+
+                        </div>
+                        <label class="col-md-0 col-form-label font-weight-bold" for="filteredProduct"><b
+                                style="color:darkred">المنتج
+                            </b></label>
+                        <div class="col-md-2">
+                            <select name="filteredProduct" class="form-control" [(ngModel)]="filteredProductName"
+                                (ngModelChange)="onFilteredProductChanged($event)">
+                                <option></option>
+                                <option *ngFor="let product of products" [ngValue]="product.name">{{product.name}}
+                                </option>
+                            </select>
+
+                        </div>
+                        <label class="col-md-0 col-form-label font-weight-bold" for="filteredSize"><b
+                                style="color:darkred">المقاس
+                            </b></label>
+                        <div class="col-md-2">
+                            <input [(ngModel)]="filteredSize" type="number" name="filteredSize" class="form-control"
+                                (ngModelChange)="onFilteredSizeChanged($event)">
+                        </div>
+                        <label class="col-md-0 col-form-label font-weight-bold" for="filteredStudyLevel"><b
+                                style="color:darkred">
+                                المرحلة الدراسية
+                            </b></label>
+                        <div class="col-md-2">
+                            <select name="filteredStudyLevel" class="form-control" [(ngModel)]="filteredStudyLevel"
+                                (ngModelChange)="onFilteredStudyLevelChanged($event)">
+                                <option></option>
+                                <option>حضانة</option>
+                                <option>ابتدائي</option>
+                                <option>اعدادي</option>
+                                <option>ثانوي</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--School Products List -->
+                    <table class="table table-responsive-sm table-hover table-outline mb-0 table-striped">
+
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center">المنتج</th>
+                                <th class="text-center">المرحلة</th>
+                                <th class="text-center">المقاس</th>
+                                <th class="text-center">السعر</th>
+                                <th class="text-center">الكمية</th>
+                                <th class="text-center">اجمالي</th>
+                                <!--th class="text-center">تاريخ التسجيل</th-->
+                                <th class="text-center">ملاحظات</th>
+                                <th *ngIf="isAdmin" class="text-center">مسح</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let schoolProduct of schoolProducts ; let i=index">
+                                <td class="text-center"><b>{{items+i+1}}</b></td>
+                                <td class="text-center" style="color: blue;"><b>{{schoolProduct.product.name}}</b>
+                                    <div *ngIf="schoolProduct.product.notes != null" class="small text-muted">
+                                        <span>{{schoolProduct.registeredDate}}</span>
+                                    </div>
+
+                                </td>
+                                <td class="text-center"><b>{{schoolProduct.studyLevel}}</b>
+                                </td>
+                                <td class="text-center"><b>{{schoolProduct.size}}</b>
+                                </td>
+                                <td class="text-center"><b>{{schoolProduct.specialPrice}}</b>
+                                </td>
+                                <td class="text-center"><b>{{schoolProduct.amount}}</b>
+                                </td>
+                                <td class="text-center"><b
+                                        style="color: orange;">{{schoolProduct.amount  * schoolProduct.specialPrice}}</b>
+                                </td>
+                                <!--td class="text-center"><b>{{schoolProduct.registeredDate}}</b>
+                                </td-->
+                                <td class="text-center"><b>{{schoolProduct.notes}}</b>
+                                </td>
+                                <td *ngIf="isAdmin" class="text-center">
+                                    <button type="button" class="delete-btn btn btn-danger"
+                                        (click)="onDeleteSchoolProduct(schoolProduct.id)">حذف
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="noDataFound">
+                        <alert type="info">
+                            <strong>{{noDataFound}}</strong>
+                        </alert>
+                    </div>
+                    <hr>
+
+                    <div style="justify-content: center !important; display: flex !important;">
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                            class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                            lastText="&raquo;" [boundaryLinks]="true" [rotate]="true" (numPages)="numPages = $event"
+                            (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage">
+                        </pagination>
+                    </div>
+                    <br>
+
+                    <button type="reset" *ngIf="!enableAdd" class="btn btn-sm btn-success"
+                        (click)="enableAdd = true; successMessage=''; schoolProduct={}    "><i
+                            class="fa fa-dot-circle-o"></i>
+                        اضافة منتج </button>
+                    <br>
+                    <br>
+                    <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && addSchoolProduct()">
+                        <div *ngIf="enableAdd">
+                            <!--School Sales Form -->
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label font-weight-bold" for="product">المنتج</label>
+                                <div class="col-md-4">
+                                    <select name="product" class="form-control" [(ngModel)]="selectedProductId"
+                                        #product="ngModel" [ngClass]="{ 'is-invalid': f.submitted && product.invalid }"
+                                        (change)="onProductSelected(product.value)" required>
+                                        <option></option>
+                                        <option *ngFor="let product of products" [value]="product.id">
+                                            {{product.name}}</option>
+                                    </select>
+                                    <div *ngIf="f.submitted && product.invalid" class="invalid-feedback">
+                                        <div *ngIf="product.errors.required"> برجاء اختيار المنتج </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label font-weight-bold" for="productDetail">المقاس
+
+                                </label>
+                                <div class="col-md-4">
+                                    <select name="productDetail" class="form-control" [(ngModel)]="selectedSizeId"
+                                        #productDetail="ngModel"
+                                        [ngClass]="{ 'is-invalid': f.submitted && productDetail.invalid }"
+                                        (change)="onProductSizeSelected(productDetail.value)" required>
+                                        <option></option>
+                                        <option *ngFor="let pDetails of productDetails" [value]="pDetails.id">
+                                            {{pDetails.size}}</option>
+                                    </select>
+                                    <span *ngIf="productDetailsNote"
+                                        style="color: orange;">{{productDetailsNote}}</span>
+                                    <div *ngIf="f.submitted && productDetail.invalid" class="invalid-feedback">
+                                        <div *ngIf="productDetail.errors.required"> برجاء اختيار المقاس</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label font-weight-bold" for="studyLevel">المرحلة
+                                    الدراسية</label>
+                                <div class="col-md-4">
+                                    <select name="studyLevel" class="form-control"
+                                        [(ngModel)]="schoolProduct.studyLevel" #studyLevel="ngModel"
+                                        [ngClass]="{ 'is-invalid': f.submitted && studyLevel.invalid }" required>
+                                        <option></option>
+                                        <option>اولي حضانة </option>
+                                        <option>ثانية حضانة </option>
+                                        <option>اولي ابتدائي</option>
+                                        <option>ثانية ابتدائي</option>
+                                        <option>ثالثة ابتدائي</option>
+                                        <option>رابعة ابتدائي</option>
+                                        <option>خامسة ابتدائي</option>
+                                        <option>سادسة ابتدائي</option>
+                                        <option>اولي اعدادي</option>
+                                        <option>ثانية اعدادي</option>
+                                        <option>ثالثة اعدادي</option>
+                                        <option>اولي ثانوي</option>
+                                        <option>ثانية ثانوي</option>
+                                        <option>ثالثة ثانوي</option>
+                                    </select>
+                                    <div *ngIf="f.submitted && studyLevel.invalid" class="invalid-feedback">
+                                        <div *ngIf="studyLevel.errors.required"> برجاء اختيار المرحلة الدراسية </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- amount -->
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label font-weight-bold" for="amount">الكمية</label>
+                                <div class="col-md-4">
+                                    <input [(ngModel)]="schoolProduct.amount" #amount="ngModel"
+                                        [ngClass]="{ 'is-invalid': f.submitted && amount.invalid }" type="number"
+                                        name="amount" class="form-control" required>
+                                    <div *ngIf="f.submitted && amount.invalid" class="invalid-feedback">
+                                        <div *ngIf="amount.errors.required"> هذا الحقل مطلوب</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- price -->
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label font-weight-bold" for="price"> سعر خاص </label>
+                                <div class="col-md-4">
+                                    <input [(ngModel)]="schoolProduct.specialPrice" #price="ngModel"
+                                        [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" type="number"
+                                        name="price" class="form-control"  required>
+                                    <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
+                                        <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- notes -->
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label font-weight-bold" for="notes">ملاحظات</label>
+                                <div class="col-md-4">
+                                    <textarea maxlength="120" [(ngModel)]="schoolProduct.notes" type="text" name="notes"
+                                        class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div *ngIf="successMessage">
+                                <alert type="success">{{successMessage}}</alert>
+                            </div>
+                            <button *ngIf="enableAdd" [disabled]="!f.form.valid" type="submit"
+                                class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
+                                أضف المنتج</button>
+                            <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i
+                                    class="fa fa-ban"></i>
+                                الرجوع</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

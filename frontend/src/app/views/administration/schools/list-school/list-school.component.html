@@ -1,0 +1,73 @@
+<br />
+<div>
+    <h4 style="text-align: center; color: rgb(3, 54, 148)">{{title}}</h4>
+</div>
+<br />
+<div *ngIf="noDataFound">
+    <br>
+    <alert type="info">
+        <strong>{{noDataFound}}</strong>
+    </alert>
+</div>
+
+<button (click)="onAdd()" class="btn btn-success "><strong>اضافة</strong> <i class="fa fa-plus-circle"></i></button>
+<br> <br>
+<table class="table table-responsive-sm table-hover table-outline mb-0 table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">المدرسة</th>
+            <th class="text-center">مالك العقد</th>
+            <th class="text-center">رقم الموبيل</th>
+            <th class="text-center">العنوان</th>
+            <th class="text-center">ملاحظات</th>
+            <th class="text-center">البضاعة</th>
+            <th class="text-center">المبيعات</th>
+            <th class="text-center">مسح</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let school of schools ; let i=index">
+            <td class="text-center"><b>{{items+i+1}}</b></td>
+            <td class="text-center">
+                <b contenteditable="true" (keydown.enter)="$event.target.blur()"
+                    (blur)="updateSchool(school.id, 'name', $event)">{{school.name}}</b>
+            </td>
+
+            <td class="text-center"><b contenteditable="true" (keydown.enter)="$event.target.blur()"
+                    (blur)="updateSchool(school.id, 'owner', $event)">{{school.owner}}</b></td>
+            <td class="text-center"><b contenteditable="true" (keydown.enter)="$event.target.blur()"
+                    (blur)="updateSchool(school.id, 'mobile', $event)">{{school.mobile}}</b></td>
+            <td class="text-center"><b contenteditable="true" (keydown.enter)="$event.target.blur()"
+                    (blur)="updateSchool(school.id, 'address', $event)">{{school.address}}</b></td>
+            <td class="text-center"><b contenteditable="true" (keydown.enter)="$event.target.blur()"
+                    (blur)="updateSchool(school.id, 'notes', $event)">{{school.notes}}</b></td>
+            <td class="text-center">
+                <button type="button" class="delete-btn btn btn-danger" (click)="onSchoolProducts(school.id)">البضاعة
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+            <td class="text-center">
+                <button type="button" class="delete-btn btn btn-danger" (click)="onSchoolSales(school.id)">المبيعات
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+            <td class="text-center">
+                <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(school.id)">حذف
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+
+<div style="justify-content: center !important; display: flex !important;">
+    <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [boundaryLinks]="true"
+        [rotate]="true" (numPages)="numPages = $event" (pageChanged)="pageChanged($event)"
+        [itemsPerPage]="itemsPerPage">
+    </pagination>
+</div>
+<pre class="card card-body card-header justify-content-center">Page: {{currentPage}} / {{numPages}}</pre>
+<hr>

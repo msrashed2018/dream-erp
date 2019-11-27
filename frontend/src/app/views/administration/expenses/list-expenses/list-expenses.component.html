@@ -1,0 +1,103 @@
+<br />
+<div>
+    <h4 style="text-align: center; color: rgb(3, 54, 148)">{{title}}</h4>
+</div>
+<br />
+
+
+<button (click)="onAdd()" class="btn btn-success "><strong>اضافة</strong> <i class="fa fa-plus-circle"></i></button>
+<br> <br>
+
+<div class="form-group row ">
+    <div class="col-md-3">
+        <label class="col-md-0 col-form-label font-weight-bold" for="filteredExpenseType">
+        </label>
+
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="filteredExpenseType"><b style="color:darkred">نوع
+            النفقة :
+        </b></label>
+    <div class="col-md-2">
+        <select name="filteredExpenseType" class="form-control" [(ngModel)]="filteredExpenseTypeId"
+            (ngModelChange)="onFilteredProductChanged($event)">
+            <option></option>
+            <option *ngFor="let expenseType of expenseTypes" [ngValue]="expenseType.id">{{expenseType.name}}
+            </option>
+        </select>
+
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="sDate"><b style="color:darkred"> من
+            : </b></label>
+    <div class="col-md-2">
+        <input [(ngModel)]="filteredDateFrom" class="form-control" type="date" name="sDate" style="text-align: right"
+            (ngModelChange)="onFilteredDateFromChanged($event)">
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="eDate"><b style="color:darkred">
+            الي : </b></label>
+    <div class="col-md-2">
+        <input [(ngModel)]="filteredDateTo" class="form-control" type="date" name="eDate" style="text-align: right"
+            (ngModelChange)="onFilteredDateToChanged($event)">
+
+    </div>
+</div>
+<table class="table table-responsive-sm table-hover table-outline mb-0 table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">نوع النفقه</th>
+            <th class="text-center">التكلفة</th>
+            <th class="text-center">تاريخ التسجيل</th>
+            <th class="text-center">ملاحظات</th>
+            <th *ngIf="isAdmin" class="text-center">حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let expense of expenses ; let i=index">
+            <td class="text-center"><b>{{items+i+1}}</b></td>
+            <td class="text-center"><b>{{expense.expenseType.name}}</b>
+                <div class="small text-muted">
+                    <span>{{expense.expenseType.notes}}</span>
+                </div>
+            </td>
+            <td class="text-center"><b>{{expense.value}}</b>
+            </td>
+            <td class="text-center"><b>{{expense.registeredDate}}</b>
+            </td>
+            <td class="text-center"><b>{{expense.notes}}</b></td>
+            <td *ngIf="isAdmin" class="text-center">
+                <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(expense.id)">حذف
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+<div *ngIf="noDataFound">
+    <br>
+    <alert type="info">
+        <strong>{{noDataFound}}</strong>
+    </alert>
+</div>
+<div class="card-body ">
+    <div class="form-group row ">
+        <label class="col-md-0 col-form-label font-weight-bold" for="totalPrice"><b style="color:darkblue"> اجمالي
+                النفقات
+                : </b></label>
+        <div class="col-md-2">
+            <input disabled="true" [(ngModel)]="totalPrice" class="form-control" type="text" name="totalPrice">
+        </div>
+    </div>
+   
+</div>
+<hr>
+
+<div style="justify-content: center !important; display: flex !important;">
+    <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [boundaryLinks]="true"
+        [rotate]="true" (numPages)="numPages = $event" (pageChanged)="pageChanged($event)"
+        [itemsPerPage]="itemsPerPage">
+    </pagination>
+</div>
+<pre class="card card-body card-header justify-content-center">Page: {{currentPage}} / {{numPages}}</pre>
+<hr>

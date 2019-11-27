@@ -1,0 +1,135 @@
+<div class="animated fadeIn ">
+    <div class="row ">
+        <div style="width:100% !important;">
+            <div class="card">
+                <div class="card-header">
+                    <strong>تفاصيل المنتج ( المقاسات )</strong>
+                    <div class="card-header-actions">
+                        <button type="button" class="card-header-action btn btn-link btn-minimize"
+                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                    </div>
+                </div>
+
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
+                    class="card-body ">
+                    <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && addProductDetails()">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="productName">اسم المنتج</label>
+                            <div class="col-md-4">
+                                <input [attr.disabled]="true" [(ngModel)]="product.name" type="text" name="productName"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="productNotes">ملاحظات</label>
+                            <div class="col-md-4">
+                                <textarea [attr.disabled]="true" [(ngModel)]="product.notes" type="text"
+                                    name="productNotes" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <br>
+                        <!--Product Details List -->
+                        <table class="table table-responsive-sm table-hover table-outline mb-0 table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">المقاس</th>
+                                    <th class="text-center">السعر</th>
+                                    <th class="text-center">سعر الجملة</th>
+                                    <th class="text-center">ملاحظات</th>
+                                    <th class="text-center">مسح</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let pDetail of productDetails ; let i=index">
+                                    <td class="text-center"><b>{{i+1}}</b></td>
+                                    <td class="text-center"><b contenteditable="true"
+                                            (keydown.enter)="$event.target.blur()"
+                                            (blur)="updateProductDetail(pDetail.id, 'size', $event)">{{pDetail.size}}</b></td>
+                                    <td class="text-center"><b contenteditable="true"
+                                        (keydown.enter)="$event.target.blur()"
+                                        (blur)="updateProductDetail(pDetail.id, 'price', $event)">{{pDetail.price}}</b></td>
+                                    <td class="text-center"><b contenteditable="true"
+                                        (keydown.enter)="$event.target.blur()"
+                                        (blur)="updateProductDetail(pDetail.id, 'wholesalePrice', $event)">{{pDetail.wholesalePrice}}</b></td>
+                                    <td class="text-center" ><b contenteditable="true"
+                                        (keydown.enter)="$event.target.blur()"
+                                        (blur)="updateProductDetail(pDetail.id, 'notes', $event)">{{pDetail.notes}}</b></td>
+                                    <td class="text-center">
+                                        <button type="button" class="delete-btn btn btn-danger"
+                                            (click)="deleteProductDetails(pDetail.id)">حذف
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br> <br>
+
+
+                        <!--Product Details Form -->
+                        <!-- size -->
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="size"> المقاس </label>
+                            <div class="col-md-3">
+                                <input [(ngModel)]="productDetail.size" #size="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && size.invalid }" type="number" name="size"
+                                    class="form-control" min="0" required>
+                                <div *ngIf="f.submitted && size.invalid" class="invalid-feedback">
+                                    <div *ngIf="size.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- price -->
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="price"> السعر </label>
+                            <div class="col-md-3">
+                                <input [(ngModel)]="productDetail.price" #price="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" type="number"
+                                    name="price" class="form-control" min="0" required>
+                                <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
+                                    <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- wholesalePrice -->
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="wholesalePrice"> سعر الجملة
+                                </label>
+                            <div class="col-md-3">
+                                <input [(ngModel)]="productDetail.wholesalePrice" #wholesalePrice="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && wholesalePrice.invalid }" type="number"
+                                    name="wholesalePrice" class="form-control" min="0" required>
+                                <div *ngIf="f.submitted && wholesalePrice.invalid" class="invalid-feedback">
+                                    <div *ngIf="wholesalePrice.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- notes -->
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="notes">ملاحظات</label>
+                            <div class="col-md-3">
+                                <textarea maxlength="100" [(ngModel)]="productDetail.notes" type="text" name="notes"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div *ngIf="successMessage">
+                                <alert type="success">{{successMessage}}</alert>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
+                                أضف المقاس</button>
+                            <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i
+                                    class="fa fa-ban"></i>
+                                الرجوع</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

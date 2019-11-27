@@ -1,0 +1,50 @@
+<div class="animated fadeIn ">
+    <div class="row ">
+      <div style="width:100% !important;">
+        <div class="card">
+          <div class="card-header">
+            <strong>بيانات نوع النفقة</strong>
+            <div class="card-header-actions">
+              <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i
+                  class={{iconCollapse}}></i></button>
+            </div>
+          </div>
+  
+          <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body ">
+            <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()">
+  
+              <div class="form-group row">
+                <label class="col-md-1 col-form-label font-weight-bold" for="expenseTypeName" style="color: darkblue;"> نوع النفقة </label>
+                <div class="col-md-6">
+                  <input maxlength="100" [(ngModel)]="expenseType.name" #name="ngModel"
+                    [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"  type="text" name="expenseTypeName"
+                    class="form-control" required>
+                  <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                    <div *ngIf="name.errors.required"> هذا الحقل مطلوب</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-1 col-form-label font-weight-bold" for="expenseTypeNotes" style="color: darkblue;"> ملاحظات</label>
+                <div class="col-md-6">
+                  <input maxlength="120" [(ngModel)]="expenseType.notes"   type="text" name="expenseTypeNotes"
+                    class="form-control" >
+                  
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
+                  أضف النوع</button>
+                <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i class="fa fa-ban"></i>
+                  إلغاء</button>
+              </div>
+  
+            </form>
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  </div>

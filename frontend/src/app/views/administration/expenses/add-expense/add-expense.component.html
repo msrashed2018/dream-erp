@@ -1,0 +1,69 @@
+<div class="animated fadeIn ">
+    <div class="row ">
+        <div style="width:100% !important;">
+            <div class="card">
+                <div class="card-header">
+                    <strong>بيانات النفقة</strong>
+                    <div class="card-header-actions">
+                        <button type="button" class="card-header-action btn btn-link btn-minimize"
+                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                    </div>
+                </div>
+
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
+                    class="card-body ">
+                    <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()">
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="expenseType" style="color: darkblue;">نوع النفقه <b
+                                    style="color: red">*</b></label>
+                            <div class="col-md-5">
+                                <select name="expenseType" class="form-control" [(ngModel)]="selectedExpenseTypeId"
+                                    #expenseType="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && expenseType.invalid }" required>
+                                    <option></option>
+                                    <option *ngFor="let expenseType of expenseTypes" [value]="expenseType.id">
+                                        {{expenseType.name}}</option>
+                                </select>
+                                <div *ngIf="f.submitted && expenseType.invalid" class="invalid-feedback">
+                                    <div *ngIf="expenseType.errors.required"> برجاء اختيار نوع النفقه</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="price" style="color: darkblue;"> التكلفة</label>
+                            <div class="col-md-5">
+                                <input [(ngModel)]="expense.value" #price="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" type="number"
+                                    name="price" class="form-control" min="0" required>
+                                <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
+                                    <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label font-weight-bold" for="expenseNotes"
+                                style="color: darkblue;"> ملاحظات</label>
+                            <div class="col-md-5">
+                                <input maxlength="120" [(ngModel)]="expense.notes" type="text"
+                                    name="expenseNotes" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
+                                أضف النفقه</button>
+                            <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i
+                                    class="fa fa-ban"></i>
+                                إلغاء</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

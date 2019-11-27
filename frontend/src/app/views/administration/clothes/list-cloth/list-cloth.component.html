@@ -1,0 +1,101 @@
+<div>
+    <h4 style="text-align: center; color: rgb(3, 54, 148)">{{title}}</h4>
+</div>
+<br />
+<div *ngIf="noDataFound">
+    <br>
+    <alert type="info">
+        <strong>{{noDataFound}}</strong>
+    </alert>
+</div>
+
+<button (click)="onAdd()" class="btn btn-success "><strong>اضافة</strong> <i class="fa fa-plus-circle"></i></button>
+<br> <br />
+
+<div class="form-group row ">
+    <!--<div class="col-md-2">
+      <button type="button" (click)="printResults()" class="btn btn-md btn-success"><i class="fa fa-print"></i>
+        طباعة </button>
+    </div>-->
+
+    <label class="col-md-0 col-form-label font-weight-bold" for="sDate"><b style="color:darkred"> من : </b></label>
+    <div class="col-md-2">
+        <input [(ngModel)]="dateFrom" class="form-control" type="date" name="sDate" style="text-align: right"
+            (ngModelChange)="onDateFromChanged($event)">
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="eDate"><b style="color:darkred"> الي : </b></label>
+    <div class="col-md-2">
+        <input [(ngModel)]="dateTo" class="form-control" type="date" name="eDate" style="text-align: right"
+            (ngModelChange)="onDateToChanged($event)">
+
+    </div>
+    <label class="col-md-0 col-form-label font-weight-bold" for="clothType"><b style="color:darkred">نوع القماش
+        </b></label>
+    <div class="col-md-2">
+        <select name="clothType" class="form-control" [(ngModel)]="selectedClothTypeId"
+            (ngModelChange)="onClothTypeChanged($event)">
+            <option value="0"></option>
+            <option *ngFor="let clothType of clothTypes" [ngValue]="clothType.id">{{clothType.name}}
+            </option>
+        </select>
+
+    </div>
+
+    <label class="col-md-0 col-form-label font-weight-bold" for="color"><b style="color:darkred"> اللون
+        </b></label>
+    <div class="col-md-2">
+        <select name="color" class="form-control" [(ngModel)]="selectedColorId"
+            (ngModelChange)="onColorChanged($event)">
+            <option value="0"></option>
+            <option *ngFor="let color of colors" [ngValue]="color.id">{{color.name}}
+            </option>
+        </select>
+    </div>
+</div>
+<table class="table table-responsive-sm table-hover table-outline mb-0 table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">نوع القماش</th>
+            <th class="text-center">سعر الكيلو</th>
+            <th class="text-center">الكمية</th>
+            <th class="text-center">تاريخ التسجيل</th>
+            <th class="text-center">ملاحظات</th>
+            <th class="text-center">تعديل</th>
+            <th class="text-center">مسح</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cloth of cloths ; let i=index">
+            <td class="text-center"><b>{{items+i+1}}</b></td>
+            <td class="text-center"><a [routerLink]="['/clothes', cloth.id,{componentMode: 'viewMode'}]">
+                    <b>{{cloth.clothType.name}}</b></a>
+            </td>
+            <td class="text-center"><b>{{cloth.price}}</b></td>
+            <td class="text-center"><b>{{cloth.amount}}</b></td>
+            <td class="text-center"><b>{{cloth.registeredDate}}</b></td>
+            <td class="text-center"><b>{{cloth.notes}}</b></td>
+            <td>
+                <button type="button" class="edit-btn btn btn-info" (click)="onEdit(equipment.id)">تعديل
+                    <i class="fa fa-edit"></i>
+                </button>
+            </td>
+            <td class="text-center">
+                <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(cloth.id)">حذف
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+
+<div style="justify-content: center !important; display: flex !important;">
+    <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [boundaryLinks]="true"
+        [rotate]="true" (numPages)="numPages = $event" (pageChanged)="pageChanged($event)"
+        [itemsPerPage]="itemsPerPage">
+    </pagination>
+</div>
+<pre class="card card-body card-header justify-content-center">Page: {{currentPage}} / {{numPages}}</pre>
+<hr>
