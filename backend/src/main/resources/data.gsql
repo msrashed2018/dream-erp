@@ -1,0 +1,7 @@
+
+
+-- USER DATA
+insert into SYSTEM_USER (USER_ID,USERNAME,PASSWORD) values (1,'admin','$2a$10$L9MIF6lIh1bVDi7xnz4g1uZ9Ylcl73e89adMYQ6tmf/G28YnIUueq');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(1,'ADMIN','تعديل النظام بالكامل');
+insert into USER_ROLES (USER_ID, ROLE_ID) VALUES(1,1);
+
